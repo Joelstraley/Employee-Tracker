@@ -72,9 +72,6 @@ connection.connect(function(err) {
             updateEmployeeManager();
             break;
         case "View Roles":
-            updateEmployeeManager();
-            break;
-        case "View Roles":
             viewRoles();
             break;
         case "Add Roles":
@@ -297,4 +294,94 @@ function removeEmployee(){
         });
       };
 
+function updateEmployeeRole(){
+    inquirer
+    .prompt([
+      {
+        name: "updateRole",
+        type: "input",
+        message: "What is the new role ID?",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
+      },
+      {
+      name: "employeeID",
+      type: "input",
+      message: "What is the Employee ID of the Employee whose Role you wish to update?",
+      validate: function(value) {
+        if (isNaN(value) === false) {
+          return true;
+        }
+        return false;
+      }
+    }
+  ])
+    .then(function(answer) {
+          var query = "UPDATE employee SET role_id = ? WHERE id = ?;" ; 
+          connection.query(query, [answer.updateRole, answer.employeeID], function(err, res) {
+            console.log(query);
+            if (err) throw err;
+            for (var i = 0; i < res.length; i++) {
+              console.table([res[i].employeeID + " has been updated!"]);
+              } 
+              runSearch();
+          });
+        });
+      };
 
+/* Add departments, roles, employees
+
+Update employee roles
+        case "Remove Roles":
+            removeRoles();
+            break;
+        case "View Departments":
+            viewDepartments();
+            break;
+        case "Add Departments":
+            addDepartments();
+            break;
+        case "Remove Departments":
+              removeDepartments(); */
+
+function updateEmployeeManager() {
+};
+
+function updateEmployeeManager() {
+};
+
+function viewRoles() {
+  var query = "SELECT * FROM role";
+  connection.query(query, function(err, res) {
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      console.table(["Role ID: " + res[i].id + " || Title: " + res[i].title + " || Salary: " + res[i].salary + " || Department ID: " + res[i].department_id]);
+    }
+    runSearch();
+    });
+  };
+
+
+function addRoles() {
+}; 
+
+function removeRoles(){
+
+};
+
+ 
+function viewDepartments() {
+  var query = "SELECT * FROM department";
+  connection.query(query, function(err, res) {
+    console.log(query)
+    if (err) throw err;
+    for (var i = 0; i < res.length; i++) {
+      console.table(["Department ID: " + res[i].id + " || Name: " + res[i].name]);
+    }
+    runSearch();
+    });
+  };
