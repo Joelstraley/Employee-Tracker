@@ -186,8 +186,7 @@ inquirer
     function employeeManager(id){ 
       var query = "SELECT employee.id, employee.first_name, employee.last_name, role.title "
       query += "FROM employee LEFT JOIN role on employee.role_id = role.id " 
-      query += "WHERE employee.manager_id = " + id + " AND employee.id != employee.manager_id;"    
-      /* query += " AND employee.id != employee.manager_id";  */
+      query += "WHERE employee.manager_id = " + id + " AND employee.id != employee.manager_id;"   
       connection.query(query, answer.employeeManager, function(err, res) {
         if (err) throw err;
         for (var i = 0; i < res.length; i++) {
@@ -205,20 +204,9 @@ inquirer
   });
 };
 
-function addEmployee(){
+/* function addEmployee(){
     inquirer
       .prompt([
-        {
-          name: "id",
-          type: "input",
-          message: "What is the Employee's ID?",
-          validate: function(value) {
-            if (isNaN(value) === false) {
-              return true;
-            }
-            return false;
-          }
-        },
         {
           name: "firstName",
           type: "input",
@@ -236,12 +224,75 @@ function addEmployee(){
         },
         {
           name: "role",
-          type: "choices",
+          type: "list",
           message: "What is the Employee's role?",
-          choices: ["Administrator", "HR Manager", "Paralegal", "Agency Attorney", "Sales Representative", "Sales Manager", "Junior Developer", "Senior Software Engineer"]})
+          choices: ["Administrator", "HR Manager", "Paralegal", "Agency Attorney", "Sales Representative", "Sales Manager", "Junior Developer", "Senior Software Engineer"]},])
   .then(function(answer) {
-    switch (answer.employeeManager) {
+    console.log(answer.lastName)
+    switch (answer.role) {
+        case "Administrator":
+          employeeRole(1);
+          break;
+        case "HR Manager":
+          employeeRole(2);
+          break;
+        case "Paralegal":
+          employeeRole(3);
+          break;
+        case "Agency Attorney": 
+          employeeRole(4);
+          break;
+        case "Sales Representative": 
+          employeeRole(5);
+          break;
+        case "Sales Manager": 
+          employeeRole(6);
+          break;
+        case "Junior Developer": 
+          employeeRole(7);
+          break;
+        case "Senior Software Developer": 
+          employeeRole(8);
+          break;
+        default:
+          runSearch();
+       };
+      function employeeRole(answer){ 
+        var query = "INSERT INTO employee (first_name, last_name, role_id)" 
+        query += " VALUES (" + answer.firstName + ", " + answer.lastName + ", " + answer.role + ")";  
+        console.log(query);       
+        connection.query(query, function(err, res) {
+          if (err) throw err;
+          for (var i = 0; i < res.length; i++) {
+            console.table([
+                "Employee ID: " +
+                res[i].id +
+                " || Employee Name : " +
+                res[i].first_name + " " + res[i].last_name +
+                " || Role : " +
+                res[i].title]);
+            }; 
+            runSearch();
+        });
+      };
+    });
+}  */
 
-
-
-}
+function removeEmployee(){
+    inquirer
+    .prompt({
+      name: "removeEmployee",
+      type: "input",
+      message: "What is the Employee ID of the Employee you would like to remove?"
+    })
+      .then(function(answer) {
+          var query = "DELETE FROM employee WHERE id = ?" ; 
+          connection.query(query, answer.removeEmployee, function(err, res) {
+            if (err) throw err;
+            for (var i = 0; i < res.length; i++) {
+              console.log(res[i].first_name + " " + res[i].first_name + " has been removed");
+              }; 
+              runSearch();
+          });
+        });
+      };
