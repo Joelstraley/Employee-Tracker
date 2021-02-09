@@ -27,11 +27,11 @@ INSERT INTO role (id, title, salary, department_id)
 VALUES (8, "Senior Software Engineer", 100000, 4);
 
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
-VALUES (1,"Jim","Davis", 1, 2); 
+VALUES (1,"Jim","Davis", 1, 3); 
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
-VALUES (2,"Gary","Larson",1, 2); 
+VALUES (2,"Gary","Larson",1, 3); 
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
-VALUES (3, "Bill", "Waterson", 2, 2); 
+VALUES (3, "Bill", "Waterson", 2, 3); 
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
 VALUES (4, "Hunter S", "Thompson", 3, 5); 
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)

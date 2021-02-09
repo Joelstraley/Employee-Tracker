@@ -33,8 +33,8 @@ connection.connect(function(err) {
         message: "What would you like to do?",
         choices: [
           "View All Employees",
-          "View All Employees by Department",
-          "View All Employees by Manager",
+          "View Employees by Department",
+          "View Employees by Manager",
           "Add Employee",
           "Remove Employee",
           "Update Employee Role",
@@ -53,20 +53,17 @@ connection.connect(function(err) {
         case "View All Employees":
           allEmployeeView();
           break;
-        case "View All Employees by Department":
+        case "View Employees by Department":
           allEmployeeDept();
           break;
         case "View Employees by Manager":
           employeeByManagerView();
           break;
         case "Add Employee":
-          employeeByManagerSearch();
+          addEmployee();
           break;
         case "Remove Employee":
-            employeeByManagerSearch();
-            break;
-        case "Remove Employee":
-            employeeByManagerSearch();
+            removeEmployee();
             break;
         case "Update Employee Role":
             updateEmployeeRole();
@@ -162,5 +159,89 @@ function allEmployeeDept() {
   };
 
 
+function employeeByManagerView() {
+inquirer
+.prompt({
+  name: "employeeManager",
+  type: "list",
+  message: "Which Manager's team would you like to view?",
+  choices: ["Bill Waterson", "Raoul Duke", "Kwame Ture", "Henry Miller"]})
+  .then(function(answer) {
+    switch (answer.employeeManager) {
+      case "Bill Waterson":
+        employeeManager(3);
+        break;
+      case "Raoul Duke":
+        employeeManager(5);
+        break;
+      case "Kwame Ture":
+        employeeManager(8);
+        break;
+      case "Henry Miller": 
+        employeeManager(11);
+        break;
+      default:
+        runSearch();
+    };
+    function employeeManager(id){ 
+      var query = "SELECT employee.id, employee.first_name, employee.last_name, role.title "
+      query += "FROM employee LEFT JOIN role on employee.role_id = role.id " 
+      query += "WHERE employee.manager_id = " + id + " AND employee.id != employee.manager_id;"    
+      /* query += " AND employee.id != employee.manager_id";  */
+      connection.query(query, answer.employeeManager, function(err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+          console.table([
+              "Employee ID: " +
+              res[i].id +
+              " || Employee Name : " +
+              res[i].first_name + " " + res[i].last_name +
+              " || Role : " +
+              res[i].title]);
+          }; 
+          runSearch();
+      });
+    };
+  });
+};
 
-  
+function addEmployee(){
+    inquirer
+      .prompt([
+        {
+          name: "id",
+          type: "input",
+          message: "What is the Employee's ID?",
+          validate: function(value) {
+            if (isNaN(value) === false) {
+              return true;
+            }
+            return false;
+          }
+        },
+        {
+          name: "firstName",
+          type: "input",
+          message: "What is the Employee's First Name?",
+        },
+        {
+          name: "lastName",
+          type: "input",
+          message: "What is the Employee's Last Name?",
+        },
+        {
+          name: "lastName",
+          type: "input",
+          message: "What is the Employee's Last Name?",
+        },
+        {
+          name: "role",
+          type: "choices",
+          message: "What is the Employee's role?",
+          choices: ["Administrator", "HR Manager", "Paralegal", "Agency Attorney", "Sales Representative", "Sales Manager", "Junior Developer", "Senior Software Engineer"]})
+  .then(function(answer) {
+    switch (answer.employeeManager) {
+
+
+
+}
