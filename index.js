@@ -96,6 +96,7 @@ connection.connect(function(err) {
       });
   }
 
+
 function allEmployeeView() {
     var query = "SELECT * FROM employee";
     connection.query(query, function(err, res) {
@@ -107,6 +108,7 @@ function allEmployeeView() {
       });
     };
   
+
 function allEmployeeDept() {
   inquirer
   .prompt({
@@ -156,6 +158,7 @@ function allEmployeeDept() {
   };
 
 
+
 function employeeByManagerView() {
 inquirer
 .prompt({
@@ -201,6 +204,7 @@ inquirer
   });
 };
 
+
 function addEmployee(){
     inquirer
       .prompt([
@@ -219,59 +223,50 @@ function addEmployee(){
           type: "input",
           message: "What is the Employee's Last Name?",
         },
-        /* {
+         {
           name: "role",
           type: "list",
           message: "What is the Employee's role?",
-          choices: ["Administrator", "HR Manager", "Paralegal", "Agency Attorney", "Sales Representative", "Sales Manager", "Junior Developer", "Senior Software Engineer"]}, */])
+          choices: ["Administrator", "HR Manager", "Paralegal", "Agency Attorney", "Sales Representative", "Sales Manager", "Junior Developer", "Senior Software Engineer"]},
+        ])
   .then(function(answer) {
-   /*  switch (answer.role) {
-        case "Administrator":
-          employeeRole(1);
-          break;
-        case "HR Manager":
-          employeeRole(2);
-          break;
-        case "Paralegal":
-          employeeRole(3);
-          break;
-        case "Agency Attorney": 
-          employeeRole(4);
-          break;
-        case "Sales Representative": 
-          employeeRole(5);
-          break;
-        case "Sales Manager": 
-          employeeRole(6);
-          break;
-        case "Junior Developer": 
-          employeeRole(7);
-          break;
-        case "Senior Software Developer": 
-          employeeRole(8);
-          break;
-        default:
-          runSearch();
-         }; 
-      function employeeRole(answer){ */ 
-        var query = "INSERT INTO employee (id, first_name, last_name)" 
-        query += " VALUES (" + answer.id + ","+ "'" + answer.firstName + "'" + ", " + "'" + answer.lastName + "'" +  ");";  
+          let result;
+          if (answer.role = "Administrator") {
+            result = 1;
+          } else if (answer.department = "HR Manager"){
+            result = 2;
+          } else if (answer.department = "Paralegal"){
+            result = 3; 
+          } else if (answer.department = "Agency Attorney"){
+            result = 4; 
+          } else if (answer.department = "Sales Representative"){
+            result = 5; 
+          } else if (answer.department = "Sales Manager"){
+            result = 6; 
+          } else if (answer.department = "Junior Developer"){
+            result = 7; 
+          } else if (answer.department = "Senior Software Engineer"){
+            result = 8; 
+          } else {
+            return false; 
+          } 
+        var query = "INSERT INTO employee (id, first_name, last_name, role_id)" 
+        query += " VALUES (" + answer.id + ","+ "'" + answer.firstName + "'" + ", " + "'" + answer.lastName + "'" + "," + result + ");";  
         console.log(query);       
         connection.query(query, function(err, res) {
           if (err) throw err;
           for (var i = 0; i < res.length; i++) {
+          }; 
             console.table([
-                "Employee ID: " +
-                res[i].id +
-                "Employee Name : " +
-                res[i].first_name + " " + res[i].last_name +
-                /* " || Role : " +
-                res[i].id + */
-              "was successfully added!"]);
-            }; 
+                "ID: " +
+                answer.id +
+                " Name : " +
+                answer.firstName + " " + answer.lastName +
+                " || Role : " +
+                answer.role + 
+              " was successfully added!"]);
             runSearch();
         });
-    
     });
 } 
 
@@ -321,38 +316,22 @@ function updateEmployeeRole(){
     }
   ])
     .then(function(answer) {
-          var query = "UPDATE employee SET role_id = ? WHERE id = ?;" ; 
+          var query = "UPDATE employee SET role_id = ? WHERE id = ?" ; 
           connection.query(query, [answer.updateRole, answer.employeeID], function(err, res) {
             console.log(query);
             if (err) throw err;
             for (var i = 0; i < res.length; i++) {
-              console.table([res[i].employeeID + " has been updated!"]);
               } 
+              console.table(["Employee: " + res[i].employeeID + " has been updated!"])
               runSearch();
           });
         });
       };
 
-/* Add departments, roles, employees
-
-Update employee roles
-        case "Remove Roles":
-            removeRoles();
-            break;
-        case "View Departments":
-            viewDepartments();
-            break;
-        case "Add Departments":
-            addDepartments();
-            break;
-        case "Remove Departments":
-              removeDepartments(); */
 
 function updateEmployeeManager() {
 };
 
-function updateEmployeeManager() {
-};
 
 function viewRoles() {
   var query = "SELECT * FROM role";
@@ -367,11 +346,79 @@ function viewRoles() {
 
 
 function addRoles() {
-}; 
+    inquirer
+      .prompt([
+        {
+          name: "id",
+          type: "input",
+          message: "Provide an ID for the new Role",
+          validate: function(value) {
+            if (isNaN(value) === false) {
+              return true;
+            }
+            return false;
+          }
+        },
+        {
+          name: "title",
+          type: "input",
+          message: "What is the Role's Title?",
+        },
+        {
+          name: "salary",
+          type: "input",
+          message: "What is the Role's Salary?",
+          validate: function(value) {
+            if (isNaN(value) === false) {
+              return true;
+            }
+            return false;
+          }
+        },
+         {
+          name: "department",
+          type: "list",
+          message: "Which Department is this Role in?",
+          choices: ["HR", "Legal", "Sales", "Engineering"],
+         },
+      ])
+  .then(function(answer) {
+          let result;
+          if (answer.department = "HR") {
+            result = 1;
+          } else if (answer.department = "Legal"){
+            result = 2;
+          } else if (answer.department = "Sales"){
+            result = 3; 
+          } else if (answer.department = "Engineering"){
+            result = 4; 
+          } else {
+            return false; 
+          }
+        var query = "INSERT INTO role (id, title, salary, department_id)" 
+        query += " VALUES (" + answer.id + ","+ "'" + answer.title + "'" + ", " + answer.salary + "," + result +  ");";  
+        console.log(query);       
+        connection.query(query, function(err, res) {
+          if (err) throw err;
+          for (var i = 0; i < res.length; i++) {
+            }; 
+            console.table([
+              "Role ID: " +
+              answer.id +
+              "|| Title: " +
+              answer.title + 
+              "|| Salary: " +
+              answer.salary + 
+              " || Department : " +
+              answer.department + 
+            " was successfully added!"])
+            runSearch();
+          });
+        });
+      }
 
 function removeRoles(){
-
-};
+}
 
  
 function viewDepartments() {
@@ -384,4 +431,46 @@ function viewDepartments() {
     }
     runSearch();
     });
-  };
+  }
+
+  function addDepartments() {
+    inquirer
+    .prompt([
+      {
+        name: "id",
+        type: "input",
+        message: "Provide an ID for the new Department",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
+      },
+      {
+        name: "name",
+        type: "input",
+        message: "What is the name of the new Department?",
+      },
+    ])
+.then(function(answer) {
+      var query = "INSERT INTO department (id, name)" 
+      query += " VALUES (" + answer.id + "," + "'" + answer.name + "'" +  ");";  
+      console.log(query);       
+      connection.query(query, function(err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+          }; 
+          console.table([
+            "Department ID: " +
+            answer.id +
+            "|| Name: " +
+            answer.name +  
+          " was successfully added!"])
+          runSearch();
+        });
+      });
+    }
+  
+  function removeDepartments(){
+  }
