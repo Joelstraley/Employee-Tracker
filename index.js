@@ -204,9 +204,14 @@ inquirer
   });
 };
 
-/* function addEmployee(){
+function addEmployee(){
     inquirer
       .prompt([
+        {
+          name: "id",
+          type: "input",
+          message: "What is the Employee's ID?",
+        },
         {
           name: "firstName",
           type: "input",
@@ -217,19 +222,13 @@ inquirer
           type: "input",
           message: "What is the Employee's Last Name?",
         },
-        {
-          name: "lastName",
-          type: "input",
-          message: "What is the Employee's Last Name?",
-        },
-        {
+        /* {
           name: "role",
           type: "list",
           message: "What is the Employee's role?",
-          choices: ["Administrator", "HR Manager", "Paralegal", "Agency Attorney", "Sales Representative", "Sales Manager", "Junior Developer", "Senior Software Engineer"]},])
+          choices: ["Administrator", "HR Manager", "Paralegal", "Agency Attorney", "Sales Representative", "Sales Manager", "Junior Developer", "Senior Software Engineer"]}, */])
   .then(function(answer) {
-    console.log(answer.lastName)
-    switch (answer.role) {
+   /*  switch (answer.role) {
         case "Administrator":
           employeeRole(1);
           break;
@@ -256,10 +255,10 @@ inquirer
           break;
         default:
           runSearch();
-       };
-      function employeeRole(answer){ 
-        var query = "INSERT INTO employee (first_name, last_name, role_id)" 
-        query += " VALUES (" + answer.firstName + ", " + answer.lastName + ", " + answer.role + ")";  
+         }; 
+      function employeeRole(answer){ */ 
+        var query = "INSERT INTO employee (id, first_name, last_name)" 
+        query += " VALUES (" + answer.id + ","+ "'" + answer.firstName + "'" + ", " + "'" + answer.lastName + "'" +  ");";  
         console.log(query);       
         connection.query(query, function(err, res) {
           if (err) throw err;
@@ -267,16 +266,17 @@ inquirer
             console.table([
                 "Employee ID: " +
                 res[i].id +
-                " || Employee Name : " +
+                "Employee Name : " +
                 res[i].first_name + " " + res[i].last_name +
-                " || Role : " +
-                res[i].title]);
+                /* " || Role : " +
+                res[i].id + */
+              "was successfully added!"]);
             }; 
             runSearch();
         });
-      };
+    
     });
-}  */
+} 
 
 function removeEmployee(){
     inquirer
@@ -290,9 +290,11 @@ function removeEmployee(){
           connection.query(query, answer.removeEmployee, function(err, res) {
             if (err) throw err;
             for (var i = 0; i < res.length; i++) {
-              console.log(res[i].first_name + " " + res[i].first_name + " has been removed");
+              console.table([res[i].first_name + " " + res[i].first_name + " has been removed"]);
               }; 
               runSearch();
           });
         });
       };
+
+
