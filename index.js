@@ -83,7 +83,7 @@ connection.connect(function(err) {
         case "View Departments":
             viewDepartments();
             break;
-        case "Add Departments":
+        case "Add Department":
             addDepartments();
             break;
         case "Remove Departments":
@@ -101,9 +101,11 @@ function allEmployeeView() {
     var query = "SELECT * FROM employee";
     connection.query(query, function(err, res) {
       if (err) throw err;
-      for (var i = 0; i < res.length; i++) {
-        console.table(["ID: " + res[i].id + " || First Name: " + res[i].first_name + " || Last Name: " + res[i].last_name + " || Role ID: " + res[i].role_id + " || Manager ID: " + res[i].manager_id]);
-      }
+      console.table(res)
+      /* for (var i = 0; i < res.length; i++) {
+        /* console.table(["ID: " + res[i].id + " || First Name: " + res[i].first_name + " || Last Name: " + res[i].last_name + " || Role ID: " + res[i].role_id + " || Manager ID: " + res[i].manager_id]); */
+     
+    /*   }  */
       runSearch();
       });
     };
@@ -322,7 +324,7 @@ function updateEmployeeRole(){
             if (err) throw err;
             for (var i = 0; i < res.length; i++) {
               } 
-              console.table(["Employee: " + res[i].employeeID + " has been updated!"])
+              console.table(["Employee: " + answer.employeeID + " has been updated!"])
               runSearch();
           });
         });
@@ -334,11 +336,11 @@ function updateEmployeeManager() {
 
 
 function viewRoles() {
-  var query = "SELECT * FROM role";
+  var query = "SELECT * FROM role LEFT JOIN department on department.id = role.department_id ORDER by department.id ASC;";
   connection.query(query, function(err, res) {
     if (err) throw err;
     for (var i = 0; i < res.length; i++) {
-      console.table(["Role ID: " + res[i].id + " || Title: " + res[i].title + " || Salary: " + res[i].salary + " || Department ID: " + res[i].department_id]);
+      console.table(["Role ID: " + res[i].id + " || Title: " + res[i].title + " || Salary: " + res[i].salary + " || Department ID: " + res[i].department_id + "||  Department Name: " + res[i].name]);
     }
     runSearch();
     });
