@@ -22,9 +22,28 @@ const connection = mysql.createConnection({
 connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
-    runSearch();
+    start();
   });
-  
+
+  function start(){
+    figlet.text('Employee Tracker', {
+      font: 'Cricket',
+      horizontalLayout: 'default',
+      verticalLayout: 'default',
+      width: 80,
+      whitespaceBreak: true
+  }, function(err, data) {
+      if (err) {
+          console.log('Something went wrong...');
+          console.dir(err);
+          return;
+      }
+      console.log(data);
+      runSearch();
+  });
+  };
+
+
   function runSearch() {
     inquirer
       .prompt({
@@ -102,10 +121,6 @@ function allEmployeeView() {
     connection.query(query, function(err, res) {
       if (err) throw err;
       console.table(res)
-      /* for (var i = 0; i < res.length; i++) {
-        /* console.table(["ID: " + res[i].id + " || First Name: " + res[i].first_name + " || Last Name: " + res[i].last_name + " || Role ID: " + res[i].role_id + " || Manager ID: " + res[i].manager_id]); */
-     
-    /*   }  */
       runSearch();
       });
     };
