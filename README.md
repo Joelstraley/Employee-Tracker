@@ -15,8 +15,9 @@ In the command line use "NPM INIT --Y" to install all Node Packages.
 ## <a name="usage">Usage</a> 
 You are prompted with the ability to View, Add or Remove Employees, Roles, Departments and the Employee's Managers. 
 
-Screenshot: 
-![alt text](https://github.com/Joelstraley/Employee-Tracker/blob/master/Employee%20Tracker%20Screenshot.png?raw=true)
+Screenshot (click for WALKTHROUGH Video): 
+[![alt text](https://github.com/Joelstraley/Employee-Tracker/blob/master/Employee%20Tracker%20Screenshot.png?raw=true)](https://drive.google.com/file/d/1huUbUfLA04e227bzAKr6H83PqDSKU5FM/preview)
+
 ## <a name="License">License</a>
 This is free and unencumbered software released into the public domain.
     
