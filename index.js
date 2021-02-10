@@ -86,8 +86,8 @@ connection.connect(function(err) {
         case "Add Department":
             addDepartments();
             break;
-        case "Remove Departments":
-              removeDepartments();
+        case "Remove Department":
+              removeDepartment();
               break;
         case "exit":
           connection.end();
@@ -141,18 +141,7 @@ function allEmployeeDept() {
         query +="WHERE department.name = ?" ; 
         connection.query(query, answer.employeeDept, function(err, res) {
           if (err) throw err;
-          console.log(answer.employeeDept);
-          for (var i = 0; i < res.length; i++) {
-            console.table([
-                "Employee ID: " +
-                res[i].id +
-                " || Employee Name : " +
-                res[i].first_name + " " + res[i].last_name +
-                " || Role : " +
-                res[i].title +
-                " || Department Name: " +
-                res[i].name]);
-            }; 
+            console.table(res);
             runSearch();
         });
       };
@@ -419,8 +408,30 @@ function addRoles() {
         });
       }
 
-function removeRoles(){
-}
+
+function removeRoles() {
+  inquirer
+  .prompt({
+    name: "removeRole",
+    type: "input",
+    message: "What is the Role ID you would like to remove?",
+    validate: function(value) {
+      if (isNaN(value) === false) {
+        return true;
+      }
+      return false;
+    },
+  })
+    .then(function(answer) {
+        var query = "DELETE FROM role WHERE id = ?" ; 
+        connection.query(query, answer.removeRole, function(err, res) {
+          if (err) throw err;
+            console.table(["Role " + answer.removeRole + " has been removed\n"]);
+            runSearch(); 
+          }); 
+      });
+    };
+ 
 
  
 function viewDepartments() {
@@ -474,5 +485,25 @@ function viewDepartments() {
       });
     }
   
-  function removeDepartments(){
-  }
+  function removeDepartment(){
+    inquirer
+  .prompt({
+    name: "removeDept",
+    type: "input",
+    message: "What is Department ID you would like to remove?",
+    validate: function(value) {
+      if (isNaN(value) === false) {
+        return true;
+      }
+      return false;
+    },
+  })
+    .then(function(answer) {
+        var query = "DELETE FROM department WHERE id = ?" ; 
+        connection.query(query, answer.removeDept, function(err, res) {
+          if (err) throw err;
+            console.table(["Department " + answer.removeDept + " has been removed\n"]);
+            runSearch(); 
+          }); 
+      });
+    };
